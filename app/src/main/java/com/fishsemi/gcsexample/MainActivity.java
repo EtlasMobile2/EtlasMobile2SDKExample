@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fishsemi.sdk.aircontrol.AirControlListener;
 import com.fishsemi.sdk.aircontrol.AirController;
@@ -23,6 +24,9 @@ import com.fishsemi.sdk.aircontrol.VideoStream;
 import com.fishsemi.sdk.aircontrol.VideoStreamListener;
 import com.fishsemi.sdk.d2dcontrol.D2dControlListener;
 import com.fishsemi.sdk.d2dcontrol.D2dController;
+import com.fishsemi.sdk.utils.SystemPropertyUtil;
+
+import java.io.File;
 
 public class MainActivity extends Activity {
 
@@ -83,6 +87,7 @@ public class MainActivity extends Activity {
     private VideoCapture mVideoCapture;
     private DataStream mDataStream1;
     private DataStream mDataStream2;
+    private EditText mServerUrl;
 
     private int mStreamId = 0;
     private Types.CaptureMode mCaptureMode = Types.CaptureMode.UNKNOWN;
@@ -102,41 +107,48 @@ public class MainActivity extends Activity {
         mAirController.start();
 
         // For video stream
-        mVideoStream = new VideoStream(mAirController, new VideoStreamListener() {
-            @Override
-            public void onPlayReady(boolean ready) {
-                if (ready) {
-                    mPlayButton.setEnabled(true);
-                    if (mAirController.getVideoStreamCount() > 1) {
-                        mSetVideoStreamButton.setVisibility(View.VISIBLE);
+        if (new File("/system/lib64/libgstreamer_android.so").exists()) {
+            mVideoStream = new VideoStream(mAirController, new VideoStreamListener() {
+                @Override
+                public void onPlayReady(boolean ready) {
+                    if (ready) {
+                        mPlayButton.setEnabled(true);
+                        if (mAirController.getVideoStreamCount() > 1) {
+                            mSetVideoStreamButton.setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        mPlayButton.setEnabled(false);
                     }
-                } else {
-                    mPlayButton.setEnabled(false);
                 }
-            }
 
-            @Override
-            public void onPlayStateChanged(boolean playing) {
-                if (playing) {
-                    mPlayButton.setText(R.string.action_stop);
-                } else {
-                    mPlayButton.setText(R.string.action_play);
+                @Override
+                public void onPlayStateChanged(boolean playing) {
+                    if (playing) {
+                        mPlayButton.setText(R.string.action_stop);
+                    } else {
+                        mPlayButton.setText(R.string.action_play);
+                    }
                 }
+
+                @Override
+                public void onVideoStreamIdChanged(int id) {
+                    mVideoStreamIdInfo.setText(getString(R.string.info_video_stream_id)+id);
+                }
+
+                @Override
+                public void onVideoStreamResolutionChanged(Types.Resolution resolution) {
+                    mVideoReslutionInfo.setText(getString(R.string.info_video_stream_resolution)+resolution);
+                }
+            });
+
+            if (mStreamId > 0) {
+                mVideoStream.setStreamId(mStreamId);
             }
 
-            @Override
-            public void onVideoStreamIdChanged(int id) {
-                mVideoStreamIdInfo.setText(getString(R.string.info_video_stream_id)+id);
-            }
-
-            @Override
-            public void onVideoStreamResolutionChanged(Types.Resolution resolution) {
-                mVideoReslutionInfo.setText(getString(R.string.info_video_stream_resolution)+resolution);
-            }
-        });
-        if (mStreamId > 0) {
-            mVideoStream.setStreamId(mStreamId);
         }
+
+
+
 
         mVideoStreamIdInfo = (TextView)findViewById(R.id.info_video_stream_id);
         mVideoStreamIdInfo.setText(getString(R.string.info_video_stream_id)+mVideoStream.getStreamId());
@@ -145,7 +157,9 @@ public class MainActivity extends Activity {
         mTextureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
-                mVideoStream.setSurface(new Surface(surfaceTexture));
+                if (mVideoStream != null) {
+                    mVideoStream.setSurface(new Surface(surfaceTexture));
+                }
             }
 
             @Override
@@ -167,7 +181,22 @@ public class MainActivity extends Activity {
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mVideoStream == null){
+                    return;
+                }
                 if (!mVideoStream.isPlaying()) {
+                    // set hardcoded rtsp url for slave controller
+                    if (SystemPropertyUtil.getBoolean("persist.song.d2r.mode", false)) {
+                        if (SystemPropertyUtil.getInt("persist.fpv.device.id", 0) == 2) {
+                            mVideoStream.setStreamUrl("rtsp://192.168.0.254:8554/H264VideoSub");
+                        }
+                    }
+
+                    // setup push server
+                    if (!mServerUrl.getText().toString().isEmpty()) {
+                        mVideoStream.setRtmpPushServerUrl(mServerUrl.getText().toString());
+                    }
+
                     mVideoStream.play();
                 } else {
                     mVideoStream.stop();
@@ -179,76 +208,84 @@ public class MainActivity extends Activity {
         mSetVideoStreamButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (mVideoStream == null){
+                    return;
+                }
                 mStreamId = (mVideoStream.getStreamId() == 1) ? 2 : 1;
                 mVideoStream.setStreamId(mStreamId);
             }
         });
 
+        // rtmp server for video stream push
+        mServerUrl = (EditText)findViewById(R.id.input_server_url);
+
         // For video capture
-        mVideoCapture = new VideoCapture(mAirController, mVideoStream, new VideoCaptureListener() {
-            @Override
-            public void onCaptureReady(boolean ready) {
-                // camera capture is ready, photo and video capture can work now
-                String str = ready ? getString(R.string.info_ready) : getString(R.string.info_not_ready);
-                mCaptureStateInfo.setText(getString(R.string.info_capture_state)+str);
-            }
-
-            @Override
-            public void onToggleCaptureModeDone(Types.Result result) {
-                Log.d(TAG, "toggle capture mode done :"+result);
-                showResult(result, mToggleModePrompt, getString(R.string.prompt_toggle_mode));
-            }
-
-            @Override
-            public void onTakePhotoDone(Types.Result result) {
-                Log.d(TAG, "take photo done :"+result);
-                showResult(result, mPhotoPrompt, getString(R.string.prompt_taking_photo));
-            }
-
-            @Override
-            public void onStartVideoRecordingDone(Types.Result result) {
-                Log.d(TAG, "start video recording done :"+result);
-                showResult(result, mStartVideoPrompt, getString(R.string.prompt_starting_video_record));
-            }
-
-            @Override
-            public void onStopVideoRecordingDone(Types.Result result) {
-                Log.d(TAG, "stop video recording done :"+result);
-                showResult(result, mStopVideoPrompt, getString(R.string.prompt_stopping_video_record));
-            }
-
-            @Override
-            public void onVideoRecordingStatusChanged(boolean inVideoRecording) {
-                String info = inVideoRecording ? getString(R.string.info_on)
-                        : getString(R.string.info_off);
-                mVideoRecordingInfo.setText(getString(R.string.info_video_recording)+info);
-            }
-
-            @Override
-            public void onCaptureModeChanged(Types.CaptureMode captureMode) {
-                mCaptureMode = captureMode;
-                String info;
-                if (captureMode ==Types.CaptureMode.PHOTO) {
-                    info = getString(R.string.info_cap_mode_photo);
-                } else if (captureMode ==Types.CaptureMode.VIDEO) {
-                    info = getString(R.string.info_cap_mode_video);
-                } else {
-                    info = "";
+        if (mVideoStream != null) {
+            mVideoCapture = new VideoCapture(mAirController, mVideoStream, new VideoCaptureListener() {
+                @Override
+                public void onCaptureReady(boolean ready) {
+                    // camera capture is ready, photo and video capture can work now
+                    String str = ready ? getString(R.string.info_ready) : getString(R.string.info_not_ready);
+                    mCaptureStateInfo.setText(getString(R.string.info_capture_state) + str);
                 }
-                mCaptureModeInfo.setText(getString(R.string.info_capture_mode)+info);
-            }
 
-            @Override
-            public void onFreeSpaceChanged(int i) {
-                String info = (i == -1) ? "" : String.format(getString(R.string.info_free_mb), i);
-                mFreeSpaceInfo.setText(getString(R.string.info_free_space)+info);
-            }
+                @Override
+                public void onToggleCaptureModeDone(Types.Result result) {
+                    Log.d(TAG, "toggle capture mode done :" + result);
+                    showResult(result, mToggleModePrompt, getString(R.string.prompt_toggle_mode));
+                }
 
-            @Override
-            public void onVideoStreamIdChanged(int i) {
+                @Override
+                public void onTakePhotoDone(Types.Result result) {
+                    Log.d(TAG, "take photo done :" + result);
+                    showResult(result, mPhotoPrompt, getString(R.string.prompt_taking_photo));
+                }
 
-            }
-        });
+                @Override
+                public void onStartVideoRecordingDone(Types.Result result) {
+                    Log.d(TAG, "start video recording done :" + result);
+                    showResult(result, mStartVideoPrompt, getString(R.string.prompt_starting_video_record));
+                }
+
+                @Override
+                public void onStopVideoRecordingDone(Types.Result result) {
+                    Log.d(TAG, "stop video recording done :" + result);
+                    showResult(result, mStopVideoPrompt, getString(R.string.prompt_stopping_video_record));
+                }
+
+                @Override
+                public void onVideoRecordingStatusChanged(boolean inVideoRecording) {
+                    String info = inVideoRecording ? getString(R.string.info_on)
+                            : getString(R.string.info_off);
+                    mVideoRecordingInfo.setText(getString(R.string.info_video_recording) + info);
+                }
+
+                @Override
+                public void onCaptureModeChanged(Types.CaptureMode captureMode) {
+                    mCaptureMode = captureMode;
+                    String info;
+                    if (captureMode == Types.CaptureMode.PHOTO) {
+                        info = getString(R.string.info_cap_mode_photo);
+                    } else if (captureMode == Types.CaptureMode.VIDEO) {
+                        info = getString(R.string.info_cap_mode_video);
+                    } else {
+                        info = "";
+                    }
+                    mCaptureModeInfo.setText(getString(R.string.info_capture_mode) + info);
+                }
+
+                @Override
+                public void onFreeSpaceChanged(int i) {
+                    String info = (i == -1) ? "" : String.format(getString(R.string.info_free_mb), i);
+                    mFreeSpaceInfo.setText(getString(R.string.info_free_space) + info);
+                }
+
+                @Override
+                public void onVideoStreamIdChanged(int i) {
+
+                }
+            });
+        }
 
         mCaptureStateInfo = (TextView)findViewById(R.id.info_capture_state);
         mCaptureModeInfo = (TextView)findViewById(R.id.info_capture_mode);
@@ -534,7 +571,7 @@ public class MainActivity extends Activity {
         super.onDestroy();
         mDataStream1.stop();
         mDataStream2.stop();
-        if (mVideoStream.isPlaying()) {
+        if (mVideoStream != null && mVideoStream.isPlaying()) {
             mVideoStream.stop();
         }
         mAirController.stop();

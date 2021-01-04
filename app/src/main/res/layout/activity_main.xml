@@ -58,6 +58,19 @@
                     android:visibility="invisible"
                     android:text="@string/action_set_video_stream_id" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/input_server_url"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:hint="@string/hint_rtmp_server"
+                    android:inputType="textWebEditText"/>
+
+            </LinearLayout>
         </LinearLayout>
         <TextureView
             android:id="@+id/texture_view"

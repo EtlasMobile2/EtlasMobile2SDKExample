@@ -72,5 +72,14 @@
 
     <string name="action_play">Play video stream</string>
     <string name="action_stop">Stop video stream</string>
+    <string name="rc_setting">RC settings</string>
+    <string name="joystick_setting">Joystick settings</string>
+    <string name="joystick_mode">JoyStick mode</string>
+    <string name="jp_hand">Japanese hand</string>
+    <string name="am_hand">American hand</string>
+    <string name="sbus1_channels">SBus1</string>
+    <string name="sbus2_channels">SBus2</string>
+
+    <string name="hint_rtmp_server">Enter rtmp server address</string>
 
 </resources>
