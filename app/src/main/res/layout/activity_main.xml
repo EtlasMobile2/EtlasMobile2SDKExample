@@ -2,389 +2,418 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    >
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/camera_info_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/info_camera"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/info_video_stream_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/info_video_stream_id" />
+
+                    <TextView
+                        android:id="@+id/info_video_stream_resolution"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/info_video_stream_resolution" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/switch_play"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text="@string/action_play" />
+
+                    <Button
+                        android:id="@+id/switch_stream"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/action_set_video_stream_id"
+                        android:visibility="invisible" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/input_server_url"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/hint_rtmp_server"
+                        android:inputType="textWebEditText" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextureView
+                android:id="@+id/texture_view"
+                android:layout_width="380dp"
+                android:layout_height="214dp"
+                android:layout_margin="5dp" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
-                android:id="@+id/camera_info_label"
+                android:id="@+id/video_capture_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:text="@string/info_camera"/>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/info_video_stream_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/info_video_stream_id"/>
+                android:text="@string/info_capture"
+                android:textSize="20sp" />
 
-                <TextView
-                    android:id="@+id/info_video_stream_resolution"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/info_video_stream_resolution"/>
-
-            </LinearLayout>
-            <LinearLayout
+            <TextView
+                android:id="@+id/info_capture_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <Button
-                    android:id="@+id/switch_play"
-                    android:enabled="false"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/action_play" />
-                <Button
-                    android:id="@+id/switch_stream"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible"
-                    android:text="@string/action_set_video_stream_id" />
-            </LinearLayout>
+                android:text="@string/info_capture_state" />
+
+            <TextView
+                android:id="@+id/info_capture_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_capture_mode" />
+
+            <TextView
+                android:id="@+id/info_video_recording_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_video_recording" />
+
+            <TextView
+                android:id="@+id/info_free_space"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_free_space" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/toggle_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_toggle_mode" />
+
+            <TextView
+                android:id="@+id/toggle_mode_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_photo" />
+
+            <TextView
+                android:id="@+id/photo_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/start_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_start_video_record" />
+
+            <TextView
+                android:id="@+id/start_video_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/stop_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_stop_video_record" />
+
+            <TextView
+                android:id="@+id/stop_video_prompt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/uart_info_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_data"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/data1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/info_uart1_data_received"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_uart1_data_received" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/send_data_uart1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_send_data_uart1" />
 
                 <EditText
-                    android:id="@+id/input_server_url"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/input_text_to_send_uart1"
                     android:layout_width="wrap_content"
-                    android:hint="@string/hint_rtmp_server"
-                    android:inputType="textWebEditText"/>
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_input_text_to_send"
+                    android:inputType="numberDecimal" />
+
+                <TextView
+                    android:id="@+id/send_data_uart1_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/info_uart1_baud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_uart1_baudrate" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/set_uart1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_set_uart1_baudrate" />
+
+                <EditText
+                    android:id="@+id/input_uart1_baud"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_input_uart_baudrate"
+                    android:inputType="numberDecimal" />
+
+                <TextView
+                    android:id="@+id/set_uart1_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/data2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/info_uart2_data_received"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_uart2_data_received" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/send_data_uart2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_send_data_uart2" />
+
+                <EditText
+                    android:id="@+id/input_text_to_send_uart2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_input_text_to_send"
+                    android:inputType="numberDecimal" />
+
+                <TextView
+                    android:id="@+id/send_data_uart2_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/info_uart2_baud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_uart2_baudrate" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/set_uart2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action_set_uart2_baudrate" />
+
+                <EditText
+                    android:id="@+id/input_uart2_baud"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_input_uart_baudrate"
+                    android:inputType="numberDecimal" />
+
+                <TextView
+                    android:id="@+id/set_uart2_prompt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
         </LinearLayout>
-        <TextureView
-            android:id="@+id/texture_view"
-            android:layout_margin="5dp"
-            android:layout_width="380dp"
-            android:layout_height="214dp"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/video_capture_label"
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="@string/info_capture"/>
-        <TextView
-            android:id="@+id/info_capture_state"
-            android:layout_width="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/d2d_info_lable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_d2d"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/info_capture_state"/>
-        <TextView
-            android:id="@+id/info_capture_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/info_capture_mode"/>
-        <TextView
-            android:id="@+id/info_video_recording_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/info_video_recording"/>
-        <TextView
-            android:id="@+id/info_free_space"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/info_free_space"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/toggle_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/action_toggle_mode" />
+            <TextView
+                android:id="@+id/d2d_connection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_d2d_connection" />
 
-        <TextView
-            android:id="@+id/toggle_mode_prompt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/d2d_signal_air"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_d2d_signal_air" />
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            <TextView
+                android:id="@+id/d2d_signal_controller"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_d2d_signal_controller" />
 
-        <Button
-            android:id="@+id/photo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/action_photo" />
+            <TextView
+                android:id="@+id/d2d_bandwidth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_d2d_bandwidth" />
 
-        <TextView
-            android:id="@+id/photo_prompt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/d2d_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_d2d_speed" />
+        </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/start_video"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/action_start_video_record" />
-
-        <TextView
-            android:id="@+id/start_video_prompt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/stop_video"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/action_stop_video_record" />
-
-        <TextView
-            android:id="@+id/stop_video_prompt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/uart_info_lable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="@string/info_data"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/data1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/info_uart1_data_received"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/info_uart1_data_received"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/send_data_uart1"
+                android:id="@+id/pair"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/action_send_data_uart1" />
-
-            <EditText
-                android:id="@+id/input_text_to_send_uart1"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:hint="@string/hint_input_text_to_send"
-                android:inputType="numberDecimal"/>
+                android:text="@string/action_d2d_pair" />
 
             <TextView
-                android:id="@+id/send_data_uart1_prompt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-        <TextView
-            android:id="@+id/info_uart1_baud"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/info_uart1_baudrate"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/set_uart1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/action_set_uart1_baudrate" />
-
-            <EditText
-                android:id="@+id/input_uart1_baud"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:hint="@string/hint_input_uart_baudrate"
-                android:inputType="numberDecimal"/>
-
-            <TextView
-                android:id="@+id/set_uart1_prompt"
+                android:id="@+id/pair_prompt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
 
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/data2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/info_uart2_data_received"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/info_uart2_data_received"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/send_data_uart2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/action_send_data_uart2" />
-
-            <EditText
-                android:id="@+id/input_text_to_send_uart2"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:hint="@string/hint_input_text_to_send"
-                android:inputType="numberDecimal"/>
-
-            <TextView
-                android:id="@+id/send_data_uart2_prompt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-        <TextView
-            android:id="@+id/info_uart2_baud"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/info_uart2_baudrate"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/set_uart2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/action_set_uart2_baudrate" />
-
-            <EditText
-                android:id="@+id/input_uart2_baud"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:hint="@string/hint_input_uart_baudrate"
-                android:inputType="numberDecimal"/>
-
-            <TextView
-                android:id="@+id/set_uart2_prompt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/d2d_info_lable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="@string/info_d2d"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/d2d_connection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/info_d2d_connection"/>
-
-        <TextView
-            android:id="@+id/d2d_signal_air"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/info_d2d_signal_air"/>
-
-        <TextView
-            android:id="@+id/d2d_signal_controller"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/info_d2d_signal_controller"/>
-        <TextView
-            android:id="@+id/d2d_bandwidth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/info_d2d_bandwidth"/>
-        <TextView
-            android:id="@+id/d2d_speed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/info_d2d_speed"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/pair"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/action_d2d_pair" />
-
-        <TextView
-            android:id="@+id/pair_prompt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-</LinearLayout>
 </ScrollView>
