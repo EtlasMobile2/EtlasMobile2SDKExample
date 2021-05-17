@@ -2,6 +2,7 @@ package com.fishsemi.gcsexample;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -74,6 +75,7 @@ public class RcSettingsActivity extends Activity {
             @Override
             public void onSbusChannelValueChanged(int sbusId, int channelId, int value) {
                 int index = (sbusId-1) * 16 + channelId-1;
+                Log.e("TAG","sbusId:  " + sbusId + "channelId:  " + sbusId + "value:  " + value);
                 SeekBar seekBar = mChannelSeekBars.get(index);
                 if (seekBar != null) {
                     seekBar.setEnabled(true);
